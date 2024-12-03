@@ -12,7 +12,7 @@ jobs:
         run: |
           docker login --username pahulgogna --password ${{secrets.GH_PAT}} ghcr.io
 
-          docker build . --tag ghcr.io/pahulgogna/monitor-lizard-backend:latest
+          docker build ./backend --tag ghcr.io/pahulgogna/monitor-lizard-backend:latest
 
           docker push ghcr.io/pahulgogna/monitor-lizard-backend:latest
 
