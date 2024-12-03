@@ -1,0 +1,18 @@
+name: Docker Image CI
+
+on: 
+  push
+
+jobs: 
+  build_and_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build and push the backend image
+        run: |
+          docker login --username pahulgogna --password ${{secrets.GH_PAT}} ghcr.io
+
+          docker build . --tag ghcr.io/pahulgogna/monitor-lizard-backend:latest
+
+          docker push ghcr.io/pahulgogna/monitor-lizard-backend:latest
+
