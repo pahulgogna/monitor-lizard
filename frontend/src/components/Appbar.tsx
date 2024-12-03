@@ -41,7 +41,7 @@ function Appbar() {
   }
 
     useEffect(() => {
-        if(!token.contents){
+        if(!token.contents && !window.location.href.includes('signup')){
             navigate("/login")
         }
     }, [token.state])

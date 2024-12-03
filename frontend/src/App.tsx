@@ -6,15 +6,17 @@ import SignupPage from "./pages/Auth/SignupPage";
 import Dashboard from "./pages/Dashboard";
 import CreateMonitor from "./pages/CreateMonitor";
 import { RecoilRoot } from "recoil";
+import Footer from "./components/Footer";
 
 function App() {
 
   return (
-    <div className="overscroll-x-none">
+    <>
+    <div className="flex flex-col min-h-screen overscroll-x-none">
       <BrowserRouter>
       <RecoilRoot>
         <Appbar/>
-          <div className="  text-slate-800">
+          <div className="flex-grow  text-slate-800">
             <Routes>
               <Route path="/login" element={<LoginPage/>}/>
               <Route path="/signup" element={<SignupPage/>}/>
@@ -25,6 +27,8 @@ function App() {
       </RecoilRoot>
       </BrowserRouter>
     </div>
+      <Footer/>
+    </>
   )
 }
 

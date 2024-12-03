@@ -17,7 +17,6 @@ function Dashboard() {
     }
 
     else if(token.state === "hasValue"){
-
         return (
                 <div className="flex justify-center flex-col p-10 pt-8">
                     <div className="flex justify-between">
@@ -32,9 +31,6 @@ function Dashboard() {
                         </Link>
                     </div>
                     <Information/>
-                    <div className="mt-10 text-xl font-semibold">
-                        Your Monitors
-                    </div>
                     <ActiveMonitors/>
                 </div>
         )

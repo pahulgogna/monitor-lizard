@@ -51,6 +51,7 @@ function LoginPage() {
                 }
             }
             catch(e){
+                console.log(e)
                 toast.error("Invalid Credentials.", {
                     position: "bottom-right"
                 })
@@ -75,7 +76,7 @@ function LoginPage() {
 
                 <div className="flex justify-center">
                     Don't have an account? 
-                    <Link className="mx-2 font-semibold text-blue-500" to={"/signup"}>Signup </Link>
+                    <Link className="mx-2 font-semibold text-blue-500" to={"/signup"}>Signup</Link>
                 </div>
             </div>
         </div>

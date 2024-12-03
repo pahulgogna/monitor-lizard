@@ -1,4 +1,4 @@
-import z from 'zod'
+import z, { string } from 'zod'
 
 
 export const userSchema = z.object({
@@ -20,7 +20,18 @@ export const monitorSchema = z.object({
     status: z.number()
 })
 
+export const mailSchema = z.object({
+    to: z.string().email(),
+    content: z.string(),
+    subject: z.string()
+})
 
+export const verifyMailSchema = z.object({
+    email: z.string().email()
+})
+
+export type VerifyMailSchema = z.infer<typeof verifyMailSchema>
+export type MailSchema = z.infer<typeof mailSchema>
 export type UserSchema = z.infer<typeof userSchema>
 export type CreateMonitorSchema = z.infer<typeof createMonitorSchema>
 export type MonitorSchema = z.infer<typeof monitorSchema>

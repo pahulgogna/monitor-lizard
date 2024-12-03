@@ -25,7 +25,7 @@ model monitor {
   id String @unique @default(uuid())
   name String
   url String
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
   responseTime Int
   status Int
