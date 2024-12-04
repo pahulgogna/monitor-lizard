@@ -1,4 +1,4 @@
-import { Settings, Trash2 } from "lucide-react"
+import { Trash2 } from "lucide-react"
 import Button from "./basics/Button"
 import Card from "./basics/Card"
 import Tag from "./basics/Tag"

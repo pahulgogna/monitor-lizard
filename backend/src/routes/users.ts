@@ -85,6 +85,7 @@ userRouter.post("/auth/signup" , async (req: CustomRequest, res: Response) => {
         }
     }
     catch(e){
+        console.log(e)
         res.status(500)
         res.json({"detail": "Internal server error"})
         return
@@ -126,7 +127,8 @@ userRouter.post('/auth/login', async (req : CustomRequest, res) => {
             }
         }
     }
-    catch{
+    catch(e){
+        console.log(e)
         res.status(500)
         res.json({"detail": "Internal server error"})
     }

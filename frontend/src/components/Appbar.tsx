@@ -11,7 +11,7 @@ function Appbar() {
   const navigate = useNavigate()
   const user = useRecoilValueLoadable(userSelector)   
 
-  function Options({name, email, className}: {
+  function Options({name, email, className}: { // the drop down for signout, etc
     name: string,
     email:string,
     className?: string
@@ -66,10 +66,12 @@ function Appbar() {
         <div className="sticky backdrop-blur z-50 w-full text-md font-semibold sm:text-lg md:text-xl lg:2xl border-b  top-0 h-14 select-none shadow-sm">
             <div className="flex justify-center flex-col h-full mx-4">
               <div className="flex justify-between">
-                <Link to={"/"} className="flex">
-                    Monitor Lizard
-                  <img className="ml-1 h-7 w-7 md:h-8 md:w-8" src="https://raw.githubusercontent.com/pahulgogna/LiveLink-frontend/master/src/assets/logo-removebg-preview.png" alt="Logo" />
-                </Link>
+                <div className="flex flex-col justify-center">
+                  <Link to={"/"} className="flex">
+                      Monitor Lizard
+                    <img className="ml-1 h-7 w-7 md:h-8 md:w-8" src="https://raw.githubusercontent.com/pahulgogna/LiveLink-frontend/master/src/assets/logo-removebg-preview.png" alt="Logo" />
+                  </Link>
+                </div>
                 {
                   token.contents &&
                   user.state === "hasValue" &&

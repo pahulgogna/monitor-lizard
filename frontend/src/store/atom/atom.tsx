@@ -32,18 +32,23 @@ export const tokenAtom = atom({
     default: selector({
         key: "tokenSelector",
         get: async () => {
-            const token = localStorage.getItem("token")
-
-            if(token){
-                const res = (await axios.get(`${import.meta.env.VITE_BEEP}/user/ping`, {
-                    headers: {Authorization: `Bearer ${token}`}
-                })).data
-
-                if(res.detail == "pong"){
-                    return token
+            try{
+                const token = localStorage.getItem("token")
+    
+                if(token){
+                    const res = (await axios.get(`${import.meta.env.VITE_BEEP}/user/ping`, {
+                        headers: {Authorization: `Bearer ${token}`}
+                    })).data
+    
+                    if(res.detail == "pong"){
+                        return token
+                    }
                 }
+                return ""
             }
-            return ""
+            catch{
+                return ""
+            }
         }
     })
 })
