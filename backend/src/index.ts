@@ -6,7 +6,7 @@ import cors from 'cors'
 const PORT = 3000
 
 var corsOptions = {
-    origin: 'http://monitor-lizard.vercel.app',
+    origin: 'https://monitor-lizard.vercel.app',
     optionsSuccessStatus: 200
 }
 
