@@ -9,7 +9,6 @@ export const monitorRouter = Router()
 monitorRouter.use(express.json())
 const prisma = new PrismaClient()
 
-
 interface CustomRequest extends Request {
     parsedBody?: CreateMonitorSchema;
     userId?: string 

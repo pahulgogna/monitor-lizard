@@ -9,10 +9,7 @@ import axios from "axios";
 export const userRouter = Router()
 const prisma = new PrismaClient()
 
-
-
 userRouter.use(express.json())
-
 
 interface CustomRequest extends Request {
     parsedBody?: UserSchema;

@@ -18,10 +18,8 @@ app.get("/",(req,res) => {
     res.json("working")
 })
 
-
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/monitor', monitorRouter)
-
 
 app.listen(PORT, () => {
     console.log(`server started on port ${PORT}`)
