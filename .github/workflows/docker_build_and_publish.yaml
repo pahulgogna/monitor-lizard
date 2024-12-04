@@ -1,7 +1,9 @@
 name: Docker Image CI
 
 on: 
-  push
+  push:
+    paths:
+      - 'backend/**'
 
 jobs: 
   build_and_publish:
