@@ -6,7 +6,7 @@ import cors from 'cors'
 const PORT = 3000
 
 var corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: 'http://monitor-lizard.vercel.app',
     optionsSuccessStatus: 200
 }
 
