@@ -14,7 +14,13 @@ function Button({
 
     async function onClickHandler() {
         setDisabled(true)
-        await onClick()
+        try{
+            await onClick()
+        }
+        catch{
+            setDisabled(false)
+            return
+        }
         setDisabled(false)
     }
 

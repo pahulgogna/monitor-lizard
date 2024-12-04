@@ -15,15 +15,21 @@ interface UserSchema {
 export const userSelector = selector({
     key: "userSelector",
     get: async ({get}) => {
-        const token = get(tokenAtom)
-        if(token){
-            const res: UserSchema = (await axios.get(`${import.meta.env.VITE_BEEP}/user`, {
-                headers: {Authorization: `Bearer ${token}`}
-            })).data
+        try{
+            const token = get(tokenAtom)
+            if(token){
+                const res: UserSchema = (await axios.get(`${import.meta.env.VITE_BEEP}/user`, {
+                    headers: {Authorization: `Bearer ${token}`}
+                })).data
+    
+                return res
+            }
+            return null
 
-            return res
         }
-        return null
+        catch{
+            return null
+        }
     }
 })
 
