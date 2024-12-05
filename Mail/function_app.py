@@ -31,21 +31,25 @@ def email_alert(req: func.HttpRequest) -> func.HttpResponse:
             server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
             server.login(user=user['user'], password=user['password'])
 
-            msg = EmailMessage()
+            
 
             for email in emails:
+                logging.info("sending...\n")
+                msg = EmailMessage()
                 msg['from'] = user['user']
                 msg['to'] = email['to']
                 msg.set_content(email['content'])
                 msg['subject'] = email['subject']
                 server.send_message(msg)
+            logging.info(f'{len(emails)} Email/s sent')
             server.quit()
 
-            logging.info(f'{len(emails)} Email/s sent')
             return json.dumps({'success':True})
         
         else:
+            logging.info(f'{len(emails)} Email/s sent')
             raise Exception("Invalid Password.")
 
     except Exception as e:
+        logging.info(f'{len(emails)} Email/s sent')
         return json.dumps({'success':False,'error':e.__str__()})
