@@ -43,6 +43,9 @@ monitorRouter.post("/create",
         var body = createMonitorSchema.safeParse(req.body)
         try{
             if(body.success){
+                if(!body.data.url.startsWith("http://") && !body.data.url.startsWith("https://")){
+                   body.data.url = "https://".concat(body.data.url)
+                }
                 req.parsedBody = body.data
                 return next()
             }

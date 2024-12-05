@@ -29,4 +29,5 @@ model monitor {
   userId String
   responseTime Int
   status Int
+  running Boolean @default(true)
 }

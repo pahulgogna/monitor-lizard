@@ -13,11 +13,15 @@ function CreateMonitorCard() {
   const setMonitors = useSetRecoilState(monitorsBulkAtom)
 
   function isUrlValid(userInput: string): boolean {
-    var res = userInput.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
-    if(res == null)
-        return false;
-    else
-        return true;
+      let url;
+      
+      try {
+        url = new URL(userInput);
+      } catch (_) {
+        return false;  
+      }
+
+      return url.protocol === "http:" || url.protocol === "https:";
   }
 
   async function UpdateMonitors() {
@@ -55,13 +59,13 @@ function CreateMonitorCard() {
               return
             }
           }
-          else if(!isUrlValid(url)){
-              toast.error("Invalid URL.", {
-                  position: "bottom-right"
-              })
-              return
-          }
-          else{
+      else if(!isUrlValid(url)){
+          toast.error("Invalid URL.", {
+              position: "bottom-right"
+          })
+          return
+      }
+      else{
               await axios.post(`${import.meta.env.VITE_BEEP}/monitor/create`, {name: name, url: url}, {
                 headers: {Authorization: `Bearer ${localStorage.getItem("token")}`}
             })
@@ -72,13 +76,13 @@ function CreateMonitorCard() {
             }).catch((e) => {
               if(e.response && e.response.data){
                 if(e.response.data.detail){
-                  toast.error(e.response.data.detail, {
+                  toast.error("Could not validate this url", {
                     position: "bottom-right"
                 })
                 return
               }
               else{
-                  toast.error("Internal Error Occurred", {
+                  toast.error("Could not validate this url", {
                     position: "bottom-right"
                 })
                 return
@@ -86,7 +90,7 @@ function CreateMonitorCard() {
               
             }
             else{
-                toast.error("Internal Error Occurred", {
+                toast.error("Could not validate this url", {
                     position: "bottom-right"
                 })
                 return    
