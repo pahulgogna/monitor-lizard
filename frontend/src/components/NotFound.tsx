@@ -20,7 +20,7 @@ function NotFound() {
             }
         }
 
-    }, [])
+    }, [token.state])
 
     if(token.state === "loading"){
         return (
