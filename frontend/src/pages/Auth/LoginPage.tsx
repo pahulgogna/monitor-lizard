@@ -51,7 +51,6 @@ function LoginPage() {
                 }
             }
             catch(e){
-                console.log(e)
                 toast.error("Invalid Credentials.", {
                     position: "bottom-right"
                 })
