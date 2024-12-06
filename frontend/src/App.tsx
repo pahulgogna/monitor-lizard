@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import CreateMonitor from "./pages/CreateMonitor";
 import { RecoilRoot } from "recoil";
 import Footer from "./components/Footer";
+import NotFound from "./components/NotFound";
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
               <Route path="/signup" element={<SignupPage/>}/>
               <Route path="/dashboard" element={<Dashboard/>}/>
               <Route path="/dashboard/new" element={<CreateMonitor/>}/>
+              <Route path="/*" element={<NotFound />} />  
             </Routes>
           </div>
       </RecoilRoot>

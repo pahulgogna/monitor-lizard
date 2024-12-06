@@ -50,7 +50,7 @@ def handleLink(linkData, db: Session):
     if (response['status'] != linkData['status'] and not response['working']):
         toSendMailData.append({
                 "to": linkData["email"],
-                "content": f'Hello {linkData["userName"]},\n\nYour monitor "{linkData["monitorName"]}" for the URL "{linkData["url"]}" has encountered an issue. It returned a status code of {response["status"]}: {codes[str(response["status"])]} and a response time of {response["responseTime"]}.\n\nPlease check the monitor and take the necessary actions as soon as possible to ensure everything is running smoothly.\n\nBest regards,\nMonitor Lizard Team',
+                "content": f'Hello {linkData["userName"]},\n\nYour monitor "{linkData["monitorName"]}" for the URL "{linkData["url"]}" has encountered an issue. It returned a status code of {response["status"]}: {codes[str(response["status"])]} and a response time of {int(response["responseTime"])}ms.\n\nPlease check the monitor and take the necessary actions as soon as possible to ensure everything is running smoothly.\n\nBest regards,\nMonitor Lizard Team',
                 "subject": "Monitor Alert: Action Required!"
         })
 
