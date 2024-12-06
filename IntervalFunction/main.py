@@ -38,8 +38,7 @@ def getStatusCodeData(url) -> dict:
             else:
                 responseCodesData[url] = {'status': data, 'working':True, 'running': True, "responseTime":responseTime}
                 return responseCodesData[url]
-        except Exception as error:
-            print(error)
+        except:
             return {'status':0, 'working':False, 'running': False, "responseTime":responseTime}
 
 
@@ -67,25 +66,18 @@ def handleLink(linkData, db: Session):
 def sendMail():
     res = requests.post(mailClient, data=json.dumps([os.environ.get('code'),toSendMailData]))
 
-    logging.info(res.content)
+    logging.info("mail: " + res.content)
 
 def main():
-    startTime = time.time()
     Monitors = getMonitorDataInDb()
 
     with get_db() as db:
         threads = [threading.Thread(target=handleLink, args=(linkData, db)) for linkData in Monitors]
-
         [thread.start() for thread in threads]
-
         [thread.join() for thread in threads]
-
         db.commit()
-
     if(toSendMailData):
         sendMail()
-
-    print("total time taken: " , time.time() - startTime)
 
 
 if __name__ == "__main__":
