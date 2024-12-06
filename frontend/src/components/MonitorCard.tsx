@@ -68,7 +68,7 @@ function MonitorCard({
                     <div className="text-xl font-bold">
                         {title}
                     </div>
-                    <a href={url} target="blank" className="text-sm text-slate-400 ">
+                    <a href={url} target="_blank" className="text-sm text-slate-400 ">
                         {url.length < 18 ? url : url.slice(0, 17) + "..."}
                     </a>
                 </div>
