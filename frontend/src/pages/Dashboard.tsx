@@ -19,13 +19,13 @@ function Dashboard() {
     else if(token.state === "hasValue"){
         return (
                 <div className="flex justify-center flex-col p-10 pt-8">
-                    <div className="flex justify-between">
+                    <div className="flex flex-col md:flex-row justify-between">
                         <div className="flex-col">
                             <div className="text-3xl md:text-4xl font-bold">Dashboard</div>
                             <div className="mb-5">Monitor your website's status with our alert systems</div>
                         </div>
-                        <Link to={"/dashboard/new"}>
-                            <Button className="w-fit h-fit font-semibold">
+                        <Link to={"/dashboard/new"} className="flex justify-start mb-2">
+                            <Button className="w-[80px] h-fit font-semibold">
                                 + Add
                             </Button>
                         </Link>
