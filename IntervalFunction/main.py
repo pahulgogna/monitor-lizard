@@ -6,7 +6,6 @@ import time
 from sqlalchemy.orm import Session
 from sqlalchemy import update
 import json
-import logging
 import os
 
 toSendMailData = []
@@ -53,20 +52,21 @@ def handleLink(linkData, db: Session):
                 "subject": "Monitor Alert: Action Required!"
         })
 
-    db.execute(
-        update(Monitor).where(Monitor.url == linkData['url']).values({
-            "status": response["status"],
-            "running": response['running'],
-            "responseTime": response['responseTime']
-        })
-    )
+    try:
+        db.execute(
+            update(Monitor).where(Monitor.url == linkData['url']).values({
+                "status": response["status"],
+                "running": response['running'],
+                "responseTime": response['responseTime']
+            })
+        )
+    except Exception as e:
+        return
 
     return
 
 def sendMail():
     res = requests.post(mailClient, data=json.dumps([os.environ.get('code'),toSendMailData]))
-
-    logging.info("mail: " + res.content)
 
 def main():
     Monitors = getMonitorDataInDb()
