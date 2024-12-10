@@ -11,6 +11,8 @@ import os
 from contextlib import contextmanager
 import logging
 
+MAX_TRIES = 3
+
 engine = create_engine(os.environ.get('DATABASE_URL'))
 
 Base = declarative_base()
@@ -45,8 +47,19 @@ def get_db():
 
 def getMonitorDataInDb() -> list:
     with get_db() as db:
+        tries = 1
+        results = []
+        while True:
+            try:
+                results = db.query(Monitor).options(joinedload(Monitor.user)).filter(Monitor.running.is_(True)).all()
+                break
+            except Exception as e:
+                tries += 1
+                if(tries == MAX_TRIES):
+                    logging.info("Could not get data from the database.")
+                    raise e
+                logging.info("error while fetching data. Trying again...\n\n" + e.__str__())
             
-        results = db.query(Monitor).options(joinedload(Monitor.user)).filter(Monitor.running.is_(True)).all()
 
         data = [
             {
