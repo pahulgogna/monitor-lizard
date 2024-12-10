@@ -59,6 +59,7 @@ def getMonitorDataInDb() -> list:
                     logging.info("Could not get data from the database.")
                     raise e
                 logging.info("error while fetching data. Trying again...\n\n" + e.__str__())
+                db.rollback()
             
 
         data = [
