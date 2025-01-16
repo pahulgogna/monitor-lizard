@@ -1,9 +1,10 @@
-import { UserSchema, userSchema, MailSchema, verifyMailSchema } from "@pahul100/monitor-lizard-common";
+import { UserSchema, userSchema, MailSchema, verifyMailSchema, resetMailSchema, resetPasswordSchema } from "@pahul100/monitor-lizard-common";
 import { PrismaClient } from "@prisma/client";
 import { sign, verify } from "jsonwebtoken"
 import CryptoJS, { SHA256 } from "crypto-js";
 import express, { Router, Request, Response, NextFunction, json } from "express";
 import axios from "axios";
+import { outgoingMails } from "../messages";
 
 
 export const userRouter = Router()
@@ -13,7 +14,13 @@ userRouter.use(express.json())
 
 interface CustomRequest extends Request {
     parsedBody?: UserSchema;
-    userId?: string 
+    userId?: string;
+    tokenData?: {
+        id: string;
+        exp: number;
+        iat: number;
+        reset: boolean;
+    }
 }
 
 
@@ -158,22 +165,11 @@ userRouter.post("/mail/verify", async (req, res) => {
 
             const mail: MailSchema = {
                 to: email.data.email,
-                content: 
-                `Hi,
-
-Thank you for signing up to Monitor Lizard! To complete your registration and verify your email address, please use the code below:
-
-Your Verification Code: ${code}
-
-If you didn't request this verification, you can safely ignore this email.
-
-Best regards,
-The Monitor Lizard Team
-                `,
+                content: outgoingMails("verify", String(code)),
                 subject: "Verification Email"
             }
 
-            const data = await axios.post(process.env.mcl as string, JSON.stringify([process.env.code,[mail]]))
+            await axios.post(process.env.mcl as string, JSON.stringify([process.env.code,[mail]]))
             
             res.json({
                 detail: CryptoJS.SHA256(code.toString()).toString(),
@@ -189,6 +185,50 @@ The Monitor Lizard Team
     }
 })
 
+userRouter.post("/reset/link", async (req, res) => {
+    let body = resetMailSchema.safeParse(req.body)
+
+    if(!body.success){
+        res.sendStatus(400)
+        return
+    }
+
+
+    let email = body.data.email
+
+    let user = await prisma.user.findFirst({
+        where: {
+            email: email
+        }
+    })
+
+    if(user){
+
+
+        let expire = Date.now() + 1000 * 60 * 60 * 2
+            
+        const token = sign({ id: user.id, exp: Math.floor(expire/1000), reset: true}, process.env.JWT_SECRET as string)
+                    
+
+        let mail: MailSchema = {
+            to: user.email,
+            subject: "Reset Password",
+            content: outgoingMails("reset", token, user.name)
+        }
+
+        await axios.post(process.env.mcl as string, JSON.stringify([process.env.code,[mail]]))
+
+        let emailArr = email.split('@')
+
+        res.json({
+            "message": "An email was sent to " + (emailArr[0].slice(0, Math.floor(emailArr[0].length/3) )) + "...@" + (emailArr[1]) + ", please follow the instructions in the mail for further instructions."
+        })
+    }
+    else{
+        res.sendStatus(404)
+    }
+
+})
 
 userRouter.use((req : CustomRequest, res: Response, next: NextFunction) => {
     try{
@@ -196,10 +236,11 @@ userRouter.use((req : CustomRequest, res: Response, next: NextFunction) => {
         const token = header.split(' ')[1];
 
         //@ts-ignore
-        const response: {id: string, exp: number, iat: number} = verify(token, process.env.JWT_SECRET as string)
+        const response: {id: string, exp: number, iat: number, reset: boolean} = verify(token, process.env.JWT_SECRET as string)
         if(response.id){
             req.userId = response.id
-            next()
+            req.tokenData = response
+            return next()
         }
         else{
           res.status(403)
@@ -207,10 +248,48 @@ userRouter.use((req : CustomRequest, res: Response, next: NextFunction) => {
         }
     }
     catch (e){
+        console.log(e)
         res.status(403)
         res.json({"detail": "Unauthorized"})
     }
     return
+})
+
+userRouter.post("/reset", async (req: CustomRequest, res) => {
+    
+    if(req.tokenData?.reset){
+        let password = resetPasswordSchema.safeParse(req.body)
+        
+        if(password.success){
+            let user = await prisma.user.update({
+                where: {
+                    id: req.userId
+                },
+                data: {
+                    password: CryptoJS.SHA256(password.data.password).toString()
+                }
+            })
+
+            if(user){
+                res.json({
+                    "detail": "Password changed."
+                })
+                return
+            }
+            else{
+                res.sendStatus(404)
+                return
+            }
+        }
+        else{
+            res.sendStatus(400)
+            return
+        }
+    }
+    else{
+        res.sendStatus(400)
+        return
+    }
 })
 
 userRouter.get('/ping', (req, res) => {

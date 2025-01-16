@@ -8,6 +8,8 @@ import CreateMonitor from "./pages/CreateMonitor";
 import { RecoilRoot } from "recoil";
 import Footer from "./components/Footer";
 import NotFound from "./components/NotFound";
+import RecoverAccount from "./pages/RecoverAccount";
+import NewPassword from "./pages/NewPassword";
 
 function App() {
 
@@ -23,7 +25,9 @@ function App() {
               <Route path="/signup" element={<SignupPage/>}/>
               <Route path="/dashboard" element={<Dashboard/>}/>
               <Route path="/dashboard/new" element={<CreateMonitor/>}/>
-              <Route path="/*" element={<NotFound />} />  
+              <Route path="/reset" element={<RecoverAccount/>}/>
+              <Route path="/reset/*" element={<NewPassword/>}/>
+              <Route path="/*" element={<NotFound />} />
             </Routes>
           </div>
       </RecoilRoot>

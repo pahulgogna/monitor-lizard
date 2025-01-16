@@ -30,6 +30,16 @@ export const verifyMailSchema = z.object({
     email: z.string().email()
 })
 
+export const resetMailSchema = z.object({
+    email: z.string().email()
+})
+
+export const resetPasswordSchema = z.object({
+    password: z.string().min(8)
+})
+
+export type ResetPasswordSchema = z.infer<typeof resetPasswordSchema>
+export type ResetMailSchema = z.infer<typeof resetMailSchema>
 export type VerifyMailSchema = z.infer<typeof verifyMailSchema>
 export type MailSchema = z.infer<typeof mailSchema>
 export type UserSchema = z.infer<typeof userSchema>

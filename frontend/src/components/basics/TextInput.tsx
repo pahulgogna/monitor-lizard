@@ -7,14 +7,18 @@ function TextInput({
     value,
     setValue,
     className = "",
-    hidden = false
+    hidden = false,
+    onChange,
+    classNameTextBox
 }: {
     lable?: string,
     placeholder?: string,
     value: string,
     setValue: React.Dispatch<React.SetStateAction<string>>,
     className?: string,
-    hidden?: boolean
+    hidden?: boolean,
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    classNameTextBox?: string
 }) {
 
 
@@ -31,8 +35,11 @@ function TextInput({
         <label htmlFor={lable} className="block mb-2 text-md font-medium">{lable}</label>
 
         <div className='relative'>
-          <input type={showPassword ? "password":"text"} id={lable} placeholder={placeholder} className="block w-full pr-5 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-md focus:ring-blue-500 focus:border-blue-500" onChange={(e) => {
+          <input type={showPassword ? "password":"text"} id={lable} placeholder={placeholder} className={"block w-full pr-5 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-md focus:ring-blue-500 focus:border-blue-500 " + classNameTextBox} onChange={(e) => {
+
               setValue(e.target.value)
+              onChange ? onChange(e) : null
+
           }} value={value}/>
           {hidden &&
             <button
