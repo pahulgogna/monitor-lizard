@@ -74,6 +74,10 @@ function LoginPage() {
                 </Button>
 
                 <div className="flex justify-center">
+                    Forgot password? 
+                    <Link className="mx-2 font-semibold text-blue-500" to={"/reset"}>recover</Link>
+                </div>
+                <div className="flex justify-center">
                     Don't have an account? 
                     <Link className="mx-2 font-semibold text-blue-500" to={"/signup"}>Signup</Link>
                 </div>
