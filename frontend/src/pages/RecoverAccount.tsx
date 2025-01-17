@@ -9,7 +9,7 @@ function RecoverAccount() {
 
     const [email, setEmail] = useState("")
     const [isValid, setIsValid] = useState(true)
-    const [sent, setSent] = useState(false)
+    const [sent, setSent] = useState("")
 
     const validateEmail = (email: string) => {
         return String(email)
@@ -24,10 +24,7 @@ function RecoverAccount() {
 
             await axios.post(`${import.meta.env.VITE_BEEP}/user/reset/link`, {email: email})
             .then((d) => {
-                toast.info(d.data && d.data.message, {
-                    position:"bottom-right"
-                })
-                setSent(true)
+                setSent(d.data ? d.data.message : "")
             })
             .catch((err: AxiosError) => {
                 err.response ? toast.error(err.response.data as String) : null
@@ -43,7 +40,7 @@ function RecoverAccount() {
 
     return (
         <div>
-            {!sent ?
+            {!sent.length ?
                 <Card className=" justify-self-center mt-16 w-11/12 md:w-1/2">
                     <div className="text-xl font-semibold underline mb-5">
                         Recover your account.
@@ -63,8 +60,8 @@ function RecoverAccount() {
                 </Card>
                 :
                 <Card className=" justify-self-center mt-16 w-11/12 md:w-1/2">
-                    <div className="text-xl font-semibold underline">
-                        A link for recovering your password was sent.
+                    <div className="text-xl font-semibold">
+                        {sent || "A link for recovering your password was sent."}
                     </div>
                 </Card>
             }
