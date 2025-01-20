@@ -15,3 +15,4 @@ def timer_trigger(myTimer: func.TimerRequest) -> None:
     except Exception as e:
         logging.error(e.__str__())
         raise e
+    
