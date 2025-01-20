@@ -2,6 +2,8 @@ name: Deploy Azure Functions
 
 on:
   push:
+    paths:
+      - 'IntervalFunction/**'
     branches:
       - main
 
@@ -25,7 +27,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -r IntervalFunction/requirements.txt
 
     - name: Set CRON Schedule
       run: |
@@ -35,5 +37,5 @@ jobs:
       uses: azure/functions-action@v1
       with:
         app-name: ${{ matrix.app_name }}
-        package: '.'
+        package: './IntervalFunction'
         publish-profile: ${{ secrets.FUNCTIONAPP_PUBLISH_PROFILE_${{ matrix.app_name }} }}
