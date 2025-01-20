@@ -48,6 +48,16 @@ jobs:
     - name: Verify Azure Functions Core Tools Installation
       run: func --version
 
+    - name: Set PUBLISH_PROFILE based on app_name
+      id: set-secrets
+      run: |
+        if [[ "${{ matrix.app_name }}" == "mlIntervalfunctionsss" ]]; then
+          echo "PUBLISH_PROFILE=${{ secrets.FUNCTIONAPP_PUBLISH_PROFILE_mlIntervalfunctionsss }}" >> $GITHUB_ENV
+        elif [[ "${{ matrix.app_name }}" == "mlIntervalfunctionsss2" ]]; then
+          echo "PUBLISH_PROFILE=${{ secrets.FUNCTIONAPP_PUBLISH_PROFILE_mlIntervalfunctionsss2 }}" >> $GITHUB_ENV
+        elif [[ "${{ matrix.app_name }}" == "mlIntervalfunctionsss3" ]]; then
+          echo "PUBLISH_PROFILE=${{ secrets.FUNCTIONAPP_PUBLISH_PROFILE_mlIntervalfunctionsss3 }}" >> $GITHUB_ENV
+
     - name: Deploy to Azure Function App
       env:
         PUBLISH_PROFILE: ${{ secrets['FUNCTIONAPP_PUBLISH_PROFILE_' + matrix.app_name] }}
