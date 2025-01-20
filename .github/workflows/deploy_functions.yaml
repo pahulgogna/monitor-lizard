@@ -6,24 +6,7 @@ on:
     - 'IntervalFunction/**'
 
 jobs:
-  setup-tools:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Install Azure Functions Core Tools
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y apt-transport-https
-        curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-        sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
-        echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
-        sudo apt-get update
-        sudo apt-get install azure-functions-core-tools-4
-        
-    - name: Verify Azure Functions Core Tools Installation
-      run: func --version
-
   deploy:
-    needs: setup-tools  # Ensures the tools are installed before this job starts
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -37,8 +20,13 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
+        python-version: '3.12'
 
+    - name: Install Azure Functions Core Tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install azure-functions-core-tools-4
+  
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
