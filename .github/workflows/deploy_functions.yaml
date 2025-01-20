@@ -5,7 +5,7 @@ on:
     paths:
       - 'IntervalFunction/**'
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
