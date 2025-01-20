@@ -18,6 +18,9 @@ jobs:
         echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
         sudo apt-get update
         sudo apt-get install azure-functions-core-tools-4
+        
+    - name: Verify Azure Functions Core Tools Installation
+      run: func --version
 
   deploy:
     needs: setup-tools  # Ensures the tools are installed before this job starts
