@@ -28,7 +28,7 @@ jobs:
       id: fa1
       with:
         app-name: mlIntervalfunctionsss
-        package: "IntervalFunctions/Function1"
+        package: IntervalFunctions/Function1
         publish-profile: ${{ secrets.FUNCTIONAPP_PUBLISH_PROFILE_mlIntervalfunctionsss }} 
         scm-do-build-during-deployment: true
         enable-oryx-build: true
@@ -38,7 +38,7 @@ jobs:
       id: fa2
       with:
         app-name: mlIntervalfunctionsss2
-        package: "IntervalFunctions/Function2"
+        package: IntervalFunctions/Function2
         publish-profile: ${{ secrets.FUNCTIONAPP_PUBLISH_PROFILE_mlIntervalfunctionsss2 }} 
         scm-do-build-during-deployment: true
         enable-oryx-build: true
@@ -48,7 +48,7 @@ jobs:
       id: fa3
       with:
         app-name: mlIntervalfunctionsss3
-        package: "IntervalFunctions/Function3"
+        package: IntervalFunctions/Function3
         publish-profile: ${{ secrets.FUNCTIONAPP_PUBLISH_PROFILE_mlIntervalfunctionsss3 }} 
         scm-do-build-during-deployment: true
         enable-oryx-build: true
