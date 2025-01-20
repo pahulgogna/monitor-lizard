@@ -16,3 +16,4 @@ def timer_trigger(myTimer: func.TimerRequest) -> None:
         logging.error(e.__str__())
         raise e
     
+    
