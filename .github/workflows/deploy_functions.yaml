@@ -1,0 +1,39 @@
+name: Deploy Azure Functions
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app_name: [mlIntervalfunctionsss, mlIntervalfunctionsss2, mlIntervalfunctionsss3]
+        cron: ["0 0/15 * * * *", "5 0/15 * * * *", "10 0/15 * * * *"]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Set CRON Schedule
+      run: |
+        sed -i "s/@app.timer_trigger(schedule=\"[^\"]*\"/@app.timer_trigger(schedule=\"${{ matrix.cron }}\"/g" IntervalFunction/function_app.py
+
+    - name: Deploy to Azure Function App
+      uses: azure/functions-action@v1
+      with:
+        app-name: ${{ matrix.app_name }}
+        package: '.'
+        publish-profile: ${{ secrets.FUNCTIONAPP_PUBLISH_PROFILE_${{ matrix.app_name }} }}
