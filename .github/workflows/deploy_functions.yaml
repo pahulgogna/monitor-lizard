@@ -48,6 +48,7 @@ jobs:
           echo "PUBLISH_PROFILE=${{ secrets.FUNCTIONAPP_PUBLISH_PROFILE_mlIntervalfunctionsss2 }}" >> $GITHUB_ENV
         elif [[ "${{ matrix.app_name }}" == "mlIntervalfunctionsss3" ]]; then
           echo "PUBLISH_PROFILE=${{ secrets.FUNCTIONAPP_PUBLISH_PROFILE_mlIntervalfunctionsss3 }}" >> $GITHUB_ENV
+        fi
 
     - name: Deploy to Azure Function App
       run: |
