@@ -32,8 +32,22 @@ jobs:
         sed -i "s/@app.timer_trigger(schedule=\"[^\"]*\"/@app.timer_trigger(schedule=\"${{ matrix.cron }}\"/g" IntervalFunction/function_app.py
 
      - name: Deploy to Azure Function App
-       uses: azure/functions-action@v1
-       with:
-        app-name: ${{ matrix.app_name }}
-        package: './IntervalFunction'
-        publish-profile: ${{ secrets.FUNCTIONAPP_PUBLISH_PROFILE_${{ matrix.app_name }} }}
+       env:
+            PUBLISH_PROFILE: ${{ secrets.FUNCTIONAPP_PUBLISH_PROFILE_mlIntervalfunctionsss }}
+       if: ${{ matrix.app_name == 'mlIntervalfunctionsss' }}
+       run: |
+            func azure functionapp publish mlIntervalfunctionsss --publish-profile "$PUBLISH_PROFILE"
+
+     - name: Deploy to Azure Function App
+       env:
+        PUBLISH_PROFILE: ${{ secrets.FUNCTIONAPP_PUBLISH_PROFILE_mlIntervalfunctionsss2 }}
+       if: ${{ matrix.app_name == 'mlIntervalfunctionsss2' }}
+       run: |
+        func azure functionapp publish mlIntervalfunctionsss2 --publish-profile "$PUBLISH_PROFILE"
+
+     - name: Deploy to Azure Function App
+       env:
+        PUBLISH_PROFILE: ${{ secrets.FUNCTIONAPP_PUBLISH_PROFILE_mlIntervalfunctionsss3 }}
+       if: ${{ matrix.app_name == 'mlIntervalfunctionsss3' }}
+       run: |
+        func azure functionapp publish mlIntervalfunctionsss3 --publish-profile "$PUBLISH_PROFILE"
