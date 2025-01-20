@@ -3,7 +3,7 @@ name: Deploy Azure Functions
 on:
   push:
     paths:
-      - 'IntervalFunction/**'
+    - 'IntervalFunction/**'
 
 jobs:
   setup-tools:
@@ -50,7 +50,7 @@ jobs:
 
     - name: Deploy to Azure Function App
       env:
-        PUBLISH_PROFILE: ${{ secrets.FUNCTIONAPP_PUBLISH_PROFILE_${{ matrix.app_name }} }}
+        PUBLISH_PROFILE: ${{ secrets['FUNCTIONAPP_PUBLISH_PROFILE_' + matrix.app_name] }}
       run: |
         pushd './IntervalFunction'
         func azure functionapp publish ${{ matrix.app_name }} --publish-profile "$PUBLISH_PROFILE"
