@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 import NotFound from "./components/NotFound";
 import RecoverAccount from "./pages/RecoverAccount";
 import NewPassword from "./pages/NewPassword";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
         <Appbar/>
           <div className="flex-grow  text-slate-800">
             <Routes>
+              <Route path="/" element={<LandingPage/>}/>
               <Route path="/login" element={<LoginPage/>}/>
               <Route path="/signup" element={<SignupPage/>}/>
               <Route path="/dashboard" element={<Dashboard/>}/>

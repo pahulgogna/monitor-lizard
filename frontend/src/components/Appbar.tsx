@@ -41,7 +41,11 @@ function Appbar() {
   }
 
     useEffect(() => {
-        if(!token.contents && !window.location.href.includes('signup') && !window.location.href.includes('reset')){
+
+      let href = window.location.href
+      let hrefSplit = href.split("/")
+
+        if(!token.contents && !href.includes('signup') && !href.includes('reset') && hrefSplit[hrefSplit.length - 1]){
             navigate("/login")
         }
     }, [token.state])
