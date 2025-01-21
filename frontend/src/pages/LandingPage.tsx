@@ -77,10 +77,10 @@ function LandingPage() {
             </div>
         </div>
 
-        <div className='text-center font-bold text-2xl md:text-3xl mb-3'>
+        <div className='text-center font-bold text-2xl md:text-3xl mb-3 px-5'>
             Ready to Start Monitoring?
         </div>
-        <div className='text-center font-semibold text-lg md:text-xl text-slate-700'>
+        <div className='text-center font-semibold text-lg md:text-xl text-slate-700 px-5'>
             Join MonitorLizard Now And Start Monitoring Your Websites.
         </div>
         <div className='flex justify-center'>
