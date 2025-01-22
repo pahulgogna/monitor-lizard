@@ -5,41 +5,51 @@ import { tokenAtom, userSelector } from "../store/atom/atom"
 import { useEffect } from "react"
 import Button from "./basics/Button"
 
+
+function Options({name, email, className}: { // the drop down for signout, etc
+  name: string,
+  email:string,
+  className?: string
+}) {
+
+  const navigate = useNavigate()
+
+  async function Signout() {
+    localStorage.removeItem("token")
+    navigate('/login')
+    window.location.reload()
+  }
+
+  return (
+    <div className={"absolute mr-1 py-4 p-2 gap-1 z-5 bg-slate-50 grid rounded-lg shadow-lg top-12 border right-6 " + className}>
+      <div className="text-base font-semibold border-b pb-1">
+        Name: {name}
+      </div>
+      <div className="text-base font-semibold pb-1 border-b">
+        Email: {email}
+      </div>
+      <div>
+        <Button className="hover:shadow-lg" onClick={async () => {
+            navigate("/dashboard")
+          }}>
+            Dashboard
+        </Button>
+        <Button className="bg-red-600 hover:bg-red-700 hover:shadow-lg" onClick={Signout}>
+          Signout
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+
 function Appbar() {
 
   const token = useRecoilValueLoadable(tokenAtom)
   const navigate = useNavigate()
-  const user = useRecoilValueLoadable(userSelector)   
+  const user = useRecoilValueLoadable(userSelector)
 
-  function Options({name, email, className}: { // the drop down for signout, etc
-    name: string,
-    email:string,
-    className?: string
-  }) {
-
-    async function Signout() {
-      localStorage.removeItem("token")
-      navigate('/login')
-      window.location.reload()
-    }
-
-    return (
-      <div className={"absolute mr-1 py-4 p-2 gap-1 z-5 bg-slate-50 grid rounded-lg shadow-lg top-12 border right-6 " + className}>
-        <div className="text-base font-semibold border-b pb-1">
-          Name: {name}
-        </div>
-        <div className="text-base font-semibold pb-1 border-b">
-          Email: {email}
-        </div>
-        <div>
-          <Button className="bg-red-600 hover:bg-red-700 hover:shadow-lg" onClick={Signout}>
-            Signout
-          </Button>
-        </div>
-      </div>
-    )
-  }
-
+  
     useEffect(() => {
 
       let href = window.location.href
