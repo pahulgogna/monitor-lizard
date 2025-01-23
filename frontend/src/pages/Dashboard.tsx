@@ -18,7 +18,7 @@ function Dashboard() {
 
     else if(token.state === "hasValue"){
         return (
-                <div className="flex justify-center flex-col p-10 pt-8">
+                <div className="flex justify-center flex-col p-5 pt-8">
                     <div className="flex flex-col md:flex-row justify-between">
                         <div className="flex-col">
                             <div className="text-3xl md:text-4xl font-bold">Dashboard</div>
