@@ -81,7 +81,7 @@ function MonitorCard({
                         {url.length < 18 ? url : url.slice(0, 17) + "..."}
                     </a>
                 </div>
-                <Tag online={(onlineIN && onlineEU) || (!onlineEU && onlineUS) || (onlineIN && onlineUS)}/>
+                <Tag online={(onlineIN && onlineEU) || (onlineEU && onlineUS) || (onlineIN && onlineUS)}/>
             </div>
             <div className="flex justify-between">
                 <div className="text-slate-600 font-light">
