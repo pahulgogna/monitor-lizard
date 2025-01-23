@@ -70,6 +70,9 @@ def handleLink(linkData: MonitorType, db: Session):
                 "eastUS": response["status"]
             })
         )
+
+        logging.info(f'{linkData["url"]}: \ntime: {response["responseTime"]}\nstatus: {response["status"]}')
+
     except Exception as e:
         logging.error(e)
         return

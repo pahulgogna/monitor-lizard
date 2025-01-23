@@ -71,7 +71,7 @@ def handleLink(linkData: MonitorType, db: Session):
             })
         )
 
-        print(d)
+        logging.info(f'{linkData["url"]}: \ntime: {response["responseTime"]}\nstatus: {response["status"]}')
 
     except Exception as e:
         logging.error(e)
