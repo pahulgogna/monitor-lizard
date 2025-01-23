@@ -16,8 +16,14 @@ export const monitorSchema = z.object({
     name: z.string(),
     url: z.string().url(),
     userId: z.string(),
-    responseTime: z.number(),
-    status: z.number()
+    
+    responseTimeIN: z.number(),
+    responseTimeUS: z.number(),
+    responseTimeEU: z.number(),
+
+    centralIndia: z.number(),
+    eastUS: z.number(),
+    westEurope: z.number()
 })
 
 export const mailSchema = z.object({

@@ -10,6 +10,7 @@ from sqlalchemy.orm import relationship, sessionmaker, joinedload, declarative_b
 import os
 from contextlib import contextmanager
 import logging
+from typing import TypedDict
 
 MAX_TRIES = 3
 
@@ -30,12 +31,31 @@ class Monitor(Base):
     name = Column(String, nullable=False)
     url = Column(String, nullable=False)
     userId = Column(String, ForeignKey('User.id', ondelete='CASCADE'), nullable=False)
-    responseTime = Column(Integer, nullable=False)
-    status = Column(Integer, nullable=False)
-    running = Column('running', Boolean, default=True)
+
+    responseTimeIN = Column(Integer, nullable=False)
+    responseTimeUS = Column(Integer, nullable=False)
+    responseTimeEU = Column(Integer, nullable=False)
+
+    runningIN = Column('runningIN', Boolean, default=True)
+    runningUS = Column('runningUS', Boolean, default=True)
+    runningEU = Column('runningEU', Boolean, default=True)
     user = relationship('User', back_populates='monitors')
 
+    eastUS = Column('eastUS', Integer, default=True)
+    westEurope = Column('westEurope', Integer, default=True)
+    centralIndia = Column('centralIndia', Integer, default=True)
+
 sessionLocal = sessionmaker(bind=engine)
+class MonitorType(TypedDict):
+    url: str
+    email: str
+    userName: str
+    monitorName: str
+    centralIndia: int
+    eastUS: int
+    westEurope: int
+    runningEU: bool
+    runningIN: bool
 
 @contextmanager
 def get_db():
@@ -45,13 +65,13 @@ def get_db():
     finally:
         db.close()
 
-def getMonitorDataInDb() -> list:
+def getMonitorDataInDb() -> list[MonitorType]:
     with get_db() as db:
         tries = 1
         results = []
         while True:
             try:
-                results = db.query(Monitor).options(joinedload(Monitor.user)).filter(Monitor.running.is_(True)).all()
+                results = db.query(Monitor).options(joinedload(Monitor.user)).filter(Monitor.runningUS.is_(True)).all()
                 break
             except Exception as e:
                 tries += 1
@@ -65,10 +85,14 @@ def getMonitorDataInDb() -> list:
         data = [
             {
                 "url": row.url,
-                "status": row.status,
                 "email": row.user.email,
                 "userName": row.user.name,
-                "monitorName": row.name
+                "monitorName": row.name,
+                "centralIndia": row.centralIndia,
+                "eastUS": row.eastUS,
+                "westEurope": row.westEurope,
+                "runningIN": row.runningIN,
+                "runningUS": row.runningUS
             }
             for row in results
         ]

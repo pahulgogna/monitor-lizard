@@ -26,9 +26,17 @@ function Information() {
         let max = 0
 
         for(let monitor of monitorsArray){
-          sum += monitor.responseTime
-          if(max < monitor.responseTime){
-            max = monitor.responseTime
+
+          let avg = ([monitor.responseTimeEU, 
+            monitor.responseTimeIN, 
+            monitor.responseTimeUS]
+            .reduce((a, b) => {
+                  return a + b
+                }, 0))/3
+
+          sum += avg
+          if(max < avg){
+            max = avg
           }
         }
 

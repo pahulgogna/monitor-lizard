@@ -20,3 +20,21 @@ export function ResponseTimeToTextColor(status: number){
         return " text-red-700 "
     }
 }
+
+export function statusCodeToBGColorDark(status: number){
+    if(status > 0 && status < 400){
+        return " bg-green-600 "
+    }
+    else{
+        return " bg-red-600 "
+    }
+}
+
+export function statusCodeToBGColorLight(status: number){
+    if(status > 0 && status < 400){
+        return " bg-green-300 "
+    }
+    else{
+        return " bg-red-300 "
+    }
+}

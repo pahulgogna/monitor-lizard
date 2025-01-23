@@ -1,5 +1,5 @@
 import requests
-from utils.Database import getMonitorDataInDb, get_db, Monitor
+from utils.Database import getMonitorDataInDb, get_db, Monitor, MonitorType
 import threading
 from utils.codes import codes
 import time
@@ -41,23 +41,32 @@ def getStatusCodeData(url) -> dict:
             return {'status':0, 'working':False, 'running': False, "responseTime":responseTime}
 
 
-def handleLink(linkData, db: Session):
-    global toSendMailData
-    response = getStatusCodeData(linkData["url"])
+def canSendMail(linkData: MonitorType):
+    if((linkData.centralIndia >= 400 and linkData.westEurope >= 400) or (not linkData.runningIN and not linkData.runningEU)):
+        return False
+    if((linkData.centralIndia >= 400 or linkData.westEurope >= 400) or (not linkData.runningIN or not linkData.runningEU)):
+        return True
+    return False
 
-    if (response['status'] != linkData['status'] and not response['working']):
-        toSendMailData.append({
-                "to": linkData["email"],
-                "content": f'Hello {linkData["userName"]},\n\nYour monitor "{linkData["monitorName"]}" for the URL "{linkData["url"]}" has encountered an issue. It returned a status code of {response["status"]}: {codes[str(response["status"])]} and a response time of {int(response["responseTime"])}ms.\n\nPlease check the monitor and take the necessary actions as soon as possible to ensure everything is running smoothly.\n\nBest regards,\nMonitor Lizard Team',
-                "subject": "Monitor Alert: Action Required!"
-        })
+
+def handleLink(linkData: MonitorType, db: Session):
+    global toSendMailData
+    response = getStatusCodeData(linkData.url)
+
+    if (response['status'] != linkData.eastUS and not response['working']):
+        if(canSendMail(linkData)):
+            toSendMailData.append({
+                    "to": linkData["email"],
+                    "content": f'Hello {linkData["userName"]},\n\nYour monitor "{linkData["monitorName"]}" for the URL "{linkData["url"]}" has encountered an issue. It returned a status code of {response["status"]}: {codes[str(response["status"])]} and a response time of {int(response["responseTime"])}ms.\n\nPlease check the monitor and take the necessary actions as soon as possible to ensure everything is running smoothly.\n\nBest regards,\nMonitor Lizard Team',
+                    "subject": "Monitor Alert: Action Required!"
+            })
 
     try:
         db.execute(
             update(Monitor).where(Monitor.url == linkData['url']).values({
-                "status": response["status"],
-                "running": response['running'],
-                "responseTime": response['responseTime']
+                "runningUS": response['running'],
+                "responseTimeUS": response['responseTime'],
+                "eastUS": response["status"]
             })
         )
     except Exception as e:

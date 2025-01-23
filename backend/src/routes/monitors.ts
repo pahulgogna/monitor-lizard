@@ -105,8 +105,15 @@ monitorRouter.post("/create",
                     url: monitorData.url,
                     name: monitorData.name,
                     userId: req.userId,
-                    responseTime: responseTime,
-                    status: response.status
+
+                    // todo: fetch these from actual servers in these locations.
+                    responseTimeIN: responseTime,
+                    responseTimeEU: responseTime,
+                    responseTimeUS: responseTime,
+
+                    eastUS: response.status,
+                    centralIndia: response.status,
+                    westEurope: response.status
                 }
             })
 

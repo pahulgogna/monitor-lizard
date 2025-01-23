@@ -101,7 +101,7 @@ export const monitorsBulkAtom = atom({
                 return monitors
             }
             catch{
-                []
+                return []
             }
         }
     })

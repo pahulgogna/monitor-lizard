@@ -28,7 +28,16 @@ model monitor {
   url String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
-  responseTime Int
-  status Int
-  running Boolean @default(true)
+
+  responseTimeIN Int 
+  responseTimeUS Int
+  responseTimeEU Int
+
+  runningIN Boolean @default(true)
+  runningUS Boolean @default(true)
+  runningEU Boolean @default(true)
+
+  eastUS Int
+  westEurope Int
+  centralIndia Int
 }
