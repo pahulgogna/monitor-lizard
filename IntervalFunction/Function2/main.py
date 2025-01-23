@@ -43,18 +43,18 @@ def getStatusCodeData(url) -> dict:
 
 
 def canSendMail(linkData: MonitorType):
-    if((linkData.centralIndia >= 400 and linkData.westEurope >= 400) or (not linkData.runningIN and not linkData.runningEU)):
+    if((linkData["centralIndia"] >= 400 and linkData["westEurope"] >= 400) or (not linkData["runningIN"] and not linkData["runningEU"])):
         return False
-    if((linkData.centralIndia >= 400 or linkData.westEurope >= 400) or (not linkData.runningIN or not linkData.runningEU)):
+    if((linkData["centralIndia"] >= 400 or linkData["westEurope"] >= 400) or (not linkData["runningIN"] or not linkData["runningEU"])):
         return True
     return False
 
 
 def handleLink(linkData: MonitorType, db: Session):
     global toSendMailData
-    response = getStatusCodeData(linkData.url)
+    response = getStatusCodeData(linkData["url"])
 
-    if (response['status'] != linkData.eastUS and not response['working']):
+    if (response['status'] != linkData["eastUS"] and not response['working']):
         if(canSendMail(linkData)):
             toSendMailData.append({
                     "to": linkData["email"],
