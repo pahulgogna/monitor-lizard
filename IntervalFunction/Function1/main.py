@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import update
 import json
 import os
+import logging
 
 toSendMailData = []
 
@@ -63,14 +64,14 @@ def handleLink(linkData: MonitorType, db: Session):
 
     try:
         db.execute(
-            update(Monitor).where(Monitor.url == linkData['url']).values({
+            update(Monitor).where(Monitor.url == linkData.url).values({
                 "runningIN": response['running'],
                 "responseTimeIN": response['responseTime'],
                 "centralIndia": response["status"]
             })
         )
     except Exception as e:
-        return
+        logging.error(e)
 
     return
 

@@ -97,4 +97,7 @@ def getMonitorDataInDb() -> list[MonitorType]:
             for row in results
         ]
 
+        logging.info("total monitors running: " + str(len(data)))
+
         return data
+

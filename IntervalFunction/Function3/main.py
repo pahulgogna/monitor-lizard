@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import update
 import json
 import os
+import logging
 
 toSendMailData = []
 
@@ -70,6 +71,7 @@ def handleLink(linkData: MonitorType, db: Session):
             })
         )
     except Exception as e:
+        logging.error(e)
         return
 
     return

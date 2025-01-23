@@ -71,7 +71,7 @@ def getMonitorDataInDb() -> list[MonitorType]:
         results = []
         while True:
             try:
-                results = db.query(Monitor).options(joinedload(Monitor.user)).filter(Monitor.runningUS.is_(True)).all()
+                results = db.query(Monitor).options(joinedload(Monitor.user)).filter(Monitor.runningEU.is_(True)).all()
                 break
             except Exception as e:
                 tries += 1
@@ -96,5 +96,7 @@ def getMonitorDataInDb() -> list[MonitorType]:
             }
             for row in results
         ]
+
+        logging.info("total monitors running: " + len(data))
 
         return data
