@@ -14,12 +14,12 @@ function ActiveMonitors() {
         return <MonitorCard key={i} id={monitor.id} 
             title={monitor.name} url={monitor.url} 
             responseTime={
-              ([monitor.responseTimeEU, 
+              parseFloat((([monitor.responseTimeEU, 
               monitor.responseTimeIN, 
               monitor.responseTimeUS]
               .reduce((a, b) => {
                     return a + b
-                  }, 0))/3
+                  }, 0))/3).toFixed(2))
                 }
             statusUS={monitor.eastUS} statusEU={monitor.westEurope} statusIN={monitor.centralIndia} 
             onlineIN={monitor.centralIndia >= 200 && monitor.centralIndia <= 299 ? true : false}

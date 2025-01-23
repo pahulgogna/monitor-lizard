@@ -18,16 +18,21 @@ export const userSelector = selector({
         try{
             const token = get(tokenAtom)
             if(token){
-                const res: UserSchema = (await axios.get(`${import.meta.env.VITE_BEEP}/user`, {
+                const res = await axios.get(`${import.meta.env.VITE_BEEP}/user`, {
                     headers: {Authorization: `Bearer ${token}`}
-                })).data
-    
-                return res
+                })
+
+                console.log(res)
+
+                let data: UserSchema = res.data 
+                
+                return data
             }
             return null
 
         }
-        catch{
+        catch(e){
+            console.log(e)
             return null
         }
     }

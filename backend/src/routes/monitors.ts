@@ -57,7 +57,8 @@ monitorRouter.post("/create",
                 return
             }
         }
-        catch{
+        catch(e){
+            console.log(e)
             res.status(400)
             res.json({
                 "detail": "Invalid Inputs"

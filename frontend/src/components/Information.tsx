@@ -27,12 +27,12 @@ function Information() {
 
         for(let monitor of monitorsArray){
 
-          let avg = ([monitor.responseTimeEU, 
+          let avg = parseFloat((([monitor.responseTimeEU, 
             monitor.responseTimeIN, 
             monitor.responseTimeUS]
             .reduce((a, b) => {
                   return a + b
-                }, 0))/3
+                }, 0))/3).toFixed(2))
 
           sum += avg
           if(max < avg){

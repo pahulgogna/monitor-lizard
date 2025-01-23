@@ -247,8 +247,7 @@ userRouter.use((req : CustomRequest, res: Response, next: NextFunction) => {
           res.json({"detail": "Unauthorized"})
         }
     }
-    catch (e){
-        console.log(e)
+    catch{
         res.status(403)
         res.json({"detail": "Unauthorized"})
     }
@@ -298,21 +297,28 @@ userRouter.get('/ping', (req, res) => {
 
 userRouter.get("/", async (req : CustomRequest, res) => {
     if(req.userId){
-        const user = await prisma.user.findFirst({
-            where: {
-                id: req.userId
-            },
-            select: {
-                name: true,
-                email: true,
+        try{
+            const user = await prisma.user.findFirst({
+                where: {
+                    id: req.userId
+                },
+                select: {
+                    name: true,
+                    email: true,
+                }
+            })
+            if(user){
+                res.json(user)
             }
-        })
-        if(user){
-            res.json(user)
+            else{
+                res.status(404)
+                res.json({"detail": "user not found"})
+            }
+
         }
-        else{
-            res.status(404)
-            res.json({"detail": "user not found"})
+        catch{
+            res.sendStatus(500)
+            return
         }
     }
     else{

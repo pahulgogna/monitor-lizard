@@ -58,6 +58,7 @@ function Appbar() {
         if(!token.contents && !href.includes('signup') && !href.includes('reset') && hrefSplit[hrefSplit.length - 1]){
             navigate("/login")
         }
+
     }, [token.state])
 
     if(token.state === "loading"){
@@ -89,6 +90,7 @@ function Appbar() {
                 {
                   token.contents &&
                   user.state === "hasValue" &&
+                  user.contents &&
                   <div className="group">
                     <Avatar>
                       {user.contents?.name || user.contents?.email }
