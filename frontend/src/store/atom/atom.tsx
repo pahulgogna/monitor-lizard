@@ -22,8 +22,6 @@ export const userSelector = selector({
                     headers: {Authorization: `Bearer ${token}`}
                 })
 
-                console.log(res)
-
                 let data: UserSchema = res.data 
                 
                 return data
@@ -32,7 +30,6 @@ export const userSelector = selector({
 
         }
         catch(e){
-            console.log(e)
             return null
         }
     }
