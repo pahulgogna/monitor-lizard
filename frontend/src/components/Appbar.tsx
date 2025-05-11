@@ -93,7 +93,7 @@ function Appbar() {
                   user.contents &&
                   <div className="group">
                     <Avatar>
-                      {user.contents?.name || user.contents?.email }
+                      {user.contents?.name || user.contents?.email}
                     </Avatar>
                     <Options name={user.contents?.name || ''} email={user.contents?.email || ''} className="hidden group-hover:grid transition-all"/>
                   </div>

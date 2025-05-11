@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
-import WorldMap from '../components/WorldMap'
 import Card from '../components/basics/Card'
 import { Bell, Clock, Globe } from 'lucide-react'
+import WorldMapWithPulsatingDots from '../components/WorldMapWithPulsatingDots'
 
 function LandingPage() {
   return (
@@ -21,7 +21,9 @@ function LandingPage() {
                 </div>
             </div>
         </div >
-        <WorldMap/>
+
+        <WorldMapWithPulsatingDots/>
+
         <div className='flex justify-center mb-16'>
             <div className='flex flex-col justify-center w-full'>
                 <div className='font-bold text-3xl md:text-4xl my-8 text-center'>
