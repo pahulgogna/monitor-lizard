@@ -39,7 +39,7 @@ function RecoverAccount() {
     }
 
     return (
-        <div>
+        <div className=" flex justify-center">
             {!sent.length ?
                 <Card className=" justify-self-center mt-16 w-11/12 md:w-1/2">
                     <div className="text-xl font-semibold underline mb-5">
@@ -59,7 +59,7 @@ function RecoverAccount() {
                     </Button>
                 </Card>
                 :
-                <Card className=" justify-self-center mt-16 w-11/12 md:w-1/2">
+                <Card className="mt-16 w-11/12 md:w-1/2">
                     <div className="text-xl font-semibold">
                         {sent || "A link for recovering your password was sent."}
                     </div>
