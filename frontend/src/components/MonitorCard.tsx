@@ -8,8 +8,9 @@ import Loading from "./overlays/Loading"
 import axios from "axios"
 import { useSetRecoilState } from "recoil"
 import { FullMonitorSchema, monitorsBulkAtom } from "../store/atom/atom"
-import { ResponseTimeToTextColor } from "../utils/ResponseTimeToColor"
+import { ResponseTimeToTextColor } from "../utils/codesConversion"
 import PulsatingDot from "./basics/PulsatingDot"
+import { useNavigate } from "react-router-dom"
 
 function MonitorCard({
     title, 
@@ -37,6 +38,8 @@ function MonitorCard({
 
         const [confirm, setConfirm] = useState(false)
         const [loading, setLoading] = useState(false)
+        const navigate = useNavigate()
+
 
         const openConfirm = async () => {setConfirm(true)}
         const closeConfirm = async () => {setConfirm(false)}
@@ -74,7 +77,11 @@ function MonitorCard({
             
             <div className="flex justify-between mb-1">
                 <div className="flex-col">
-                    <div className="text-xl font-bold">
+                    <div className="text-xl font-bold hover:cursor-pointer" onClick={
+                        () => {
+                            navigate(`/monitor/${id}`)
+                        }}
+                    >
                         {title}
                     </div>
                     <a href={url} target="_blank" className="text-sm text-slate-400 ">

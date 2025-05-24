@@ -13,6 +13,7 @@ export const createMonitorSchema = z.object({
 })
 
 export const monitorSchema = z.object({
+    id: z.string(),
     name: z.string(),
     url: z.string().url(),
     userId: z.string(),

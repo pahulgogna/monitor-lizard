@@ -2,7 +2,7 @@ import { useRecoilValueLoadable } from 'recoil'
 import InfoCard from './InfoCard'
 import { monitorsBulkAtom } from '../store/atom/atom'
 import { useEffect, useState } from 'react'
-import { ResponseTimeToTextColor } from '../utils/ResponseTimeToColor'
+import { ResponseTimeToTextColor } from '../utils/codesConversion'
 import Button from './basics/Button'
 import { useNavigate } from 'react-router-dom'
 

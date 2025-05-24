@@ -3,8 +3,10 @@ import MonitorCard from "./MonitorCard"
 import { monitorsBulkAtom } from "../store/atom/atom"
 import Loading from "./overlays/Loading"
 import { useMemo } from "react"
+import { codeToStatus } from "../utils/codesConversion"
 
 function ActiveMonitors() {
+
 
   const monitors = useRecoilValueLoadable(monitorsBulkAtom)
 
@@ -22,9 +24,9 @@ function ActiveMonitors() {
                   }, 0))/3).toFixed(2))
                 }
             statusUS={monitor.eastUS} statusEU={monitor.westEurope} statusIN={monitor.centralIndia} 
-            onlineIN={monitor.centralIndia >= 200 && monitor.centralIndia <= 299 ? true : false}
-            onlineUS={monitor.eastUS >= 200 && monitor.eastUS <= 299 ? true : false}
-            onlineEU={monitor.westEurope >= 200 && monitor.westEurope <= 299 ? true : false}
+            onlineIN={codeToStatus(monitor.centralIndia)}
+            onlineUS={codeToStatus(monitor.eastUS)}
+            onlineEU={codeToStatus(monitor.westEurope)}
           />
       })
     }

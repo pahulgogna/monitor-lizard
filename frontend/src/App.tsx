@@ -11,6 +11,7 @@ import NotFound from "./components/NotFound";
 import RecoverAccount from "./pages/RecoverAccount";
 import NewPassword from "./pages/NewPassword";
 import LandingPage from "./pages/LandingPage";
+import ViewMonitor from "./pages/ViewMonitor";
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
               <Route path="/dashboard/new" element={<CreateMonitor/>}/>
               <Route path="/reset" element={<RecoverAccount/>}/>
               <Route path="/reset/*" element={<NewPassword/>}/>
+              <Route path="/monitor/:id" element={<ViewMonitor/>}/>
               <Route path="/*" element={<NotFound />} />
             </Routes>
           </div>

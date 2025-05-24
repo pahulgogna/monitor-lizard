@@ -2,14 +2,17 @@ import React from "react"
 
 function Card({
   children, 
-  className}
-  :
+  className,
+  onClick
+  }:
   {children : React.ReactNode,
-  className?: string}) {
+  className?: string,
+  onClick?: () => void
+}) {
 
 
   return (
-    <div className={'container p-10 border rounded-lg shadow-sm bg-white ' + className}>
+    <div onClick={onClick} className={'container p-10 border rounded-lg shadow-sm bg-white ' + className}>
       {children}
     </div>
   )

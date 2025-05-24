@@ -1,4 +1,4 @@
-import { statusCodeToBGColorDark, statusCodeToBGColorLight } from "../../utils/ResponseTimeToColor"
+import { statusCodeToBGColorDark, statusCodeToBGColorLight } from "../../utils/codesConversion"
 
 function PulsatingDot({status}: {
     status: number

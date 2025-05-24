@@ -1,16 +1,36 @@
 import { useState, useEffect } from 'react';
 import * as d3 from 'd3';
+import { codeToStatus } from '../utils/codesConversion';
 
-// Define type interfaces
 interface Location {
   name: string;
   coordinates: [number, number]; // [longitude, latitude]
   color: string;
-  description: string; // Add description property
+  status: number;
+  responseTime: number
 }
 
 
-export default function WorldMapWithPulsatingDots() {
+export default function WorldMapWithPulsatingDots(
+  {
+    centralIndia = 200,
+    westEU = 200,
+    eastUS = 200,
+    showStatus = false,
+    responseTimeCI = 0,
+    responseTimeWE = 0,
+    responseTimeEUS = 0
+  }:
+  {
+    centralIndia?: number,
+    westEU?: number,
+    eastUS?: number,
+    showStatus?: boolean,
+    responseTimeCI?: number,
+    responseTimeWE?: number,
+    responseTimeEUS?: number
+  }
+) {
   const [geoData, setGeoData] = useState<GeoJSON.FeatureCollection<GeoJSON.Geometry> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -19,9 +39,9 @@ export default function WorldMapWithPulsatingDots() {
   const mapHeight = 450;
   
   const locations: Location[] = [
-    { name: "Central India", coordinates: [78.9629, 20.5937], color: "#00cc00", description: "A region in India known for its rich culture." },
-    { name: "East EU", coordinates: [19.1451, 51.9194], color: "#00cc00", description: "Eastern Europe with diverse history and landscapes." },
-    { name: "West US", coordinates: [-122.4194, 37.7749], color: "#00cc00", description: "Western United States, home to Silicon Valley." }
+    { name: "Central India", coordinates: [78.9629, 20.5937], color: codeToStatus(centralIndia) ? "#00cc00" : "#cc0000", status: centralIndia, responseTime: responseTimeCI },
+    { name: "West EU", coordinates: [3.1451, 47.9194], color: codeToStatus(westEU) ? "#00cc00" : "#cc0000", status: westEU, responseTime: responseTimeWE },
+    { name: "East US", coordinates: [-80.0190, 37.7749], color: codeToStatus(eastUS) ? "#00cc00" : "#cc0000", status: eastUS, responseTime: responseTimeEUS}
   ];
   
   // Create projection
@@ -69,7 +89,7 @@ export default function WorldMapWithPulsatingDots() {
   }
 
   return (
-    <div className="p-4 rounded-lg mt-5">
+    <div className="rounded-lg mt-5">
       <div className="relative">
             <svg width="100%" height="100%" viewBox={`0 0 ${mapWidth} ${mapHeight}`} className="md:border-y border-gray-300 bg-white">
             {geoData && geoData.features.map((feature, i) => (
@@ -84,9 +104,12 @@ export default function WorldMapWithPulsatingDots() {
             ))}
             {locations.map((location, index) => (
                 <PulsatingDotSVG
-                key={index}
-                location={location}
-                projection={projection}
+                  key={index}
+                  location={location}
+                  projection={projection}
+                  showStatus={showStatus}
+                  status={location.status}
+                  responseTime={location.responseTime}
                 />
             ))}
             </svg>
@@ -101,7 +124,22 @@ interface LocationWithPosition extends Location {
   y: number;
 }
 
-function PulsatingDotSVG({ location, projection }: { location: Location; projection: d3.GeoProjection }) {
+function PulsatingDotSVG(
+  { 
+    location, 
+    projection, 
+    showStatus = false, 
+    status = 0,
+    responseTime = 0
+  }
+  : { 
+    location: Location; 
+    projection: d3.GeoProjection, 
+    showStatus: boolean, 
+    status?: number,
+    responseTime?: number
+  }) {
+
   const [isPulsing, setIsPulsing] = useState(true);
   const [hoveredLocation, setHoveredLocation] = useState<LocationWithPosition | null>(null);
   
@@ -155,7 +193,7 @@ function PulsatingDotSVG({ location, projection }: { location: Location; project
                 x={hoveredLocation.x + 15}
                 y={hoveredLocation.y - 15}
                 width={80}
-                height={35}
+                height={showStatus ? 45 : 25}
                 rx={5}
                 ry={5}
                 fill="white"
@@ -164,24 +202,45 @@ function PulsatingDotSVG({ location, projection }: { location: Location; project
                 opacity={0.9}
               />
               <text
-                x={hoveredLocation.x + 25}
+                x={hoveredLocation.x + 19}
                 y={hoveredLocation.y}
                 fontWeight="bold"
                 fontSize={9}
                 fill="#333"
               >
-                {hoveredLocation.name}
+                {showStatus ?  `status code: ${status}` : hoveredLocation.name}
               </text>
-              {/* Tooltip description - wrapped */}
+
               {
-                
+                showStatus ? 
                 <text
-                x={hoveredLocation.x + 25}
-                y={hoveredLocation.y + 30}
-                fontSize={8}
-                fill="#666"
-              >
-              </text>}
+                  x={hoveredLocation.x + 19}
+                  y={hoveredLocation.y + 11}
+                  fontWeight="bold"
+                  fontSize={9}
+                  fill="#333"
+                >
+                  {`Response Time`}
+                </text>
+                : null
+              }
+
+              {
+                showStatus ? 
+                <text
+                  x={hoveredLocation.x + 40}
+                  y={hoveredLocation.y + 24}
+                  // fontWeight="bold"
+                  fontSize={10}
+                  fill="#333"
+                >
+                  {`${responseTime}ms`}
+                </text>
+                : null
+              }
+
+
+              {/* Tooltip description - wrapped */}
             </g>
           )}
     </svg>

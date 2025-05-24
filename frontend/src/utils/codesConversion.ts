@@ -38,3 +38,7 @@ export function statusCodeToBGColorLight(status: number){
         return " bg-red-300 "
     }
 }
+
+export function codeToStatus(code: number){
+    return code >= 200 && code <= 299 ? true : false
+}
