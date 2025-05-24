@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { Avatar } from "./basics/Avatar"
 import { useRecoilValueLoadable } from "recoil"
 import { tokenAtom, userSelector } from "../store/atom/atom"
-import { useEffect } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Button from "./basics/Button"
 
 
@@ -42,68 +42,93 @@ function Options({name, email, className}: { // the drop down for signout, etc
   )
 }
 
-
 function Appbar() {
 
   const token = useRecoilValueLoadable(tokenAtom)
   const navigate = useNavigate()
   const user = useRecoilValueLoadable(userSelector)
+  const [mouseIn, setMouseIn] = useState<boolean>(false)
+  const [clicks, setClicks] = useState<number>(0)
+
+  const optionsOpen = useMemo(() => {
+    if(!mouseIn){
+      return false
+    }
+    if(mouseIn){
+      return true
+    }
+  }, [clicks])
 
   
-    useEffect(() => {
+  useEffect(() => {
 
-      let href = window.location.href
-      let hrefSplit = href.split("/")
+    let href = window.location.href
+    let hrefSplit = href.split("/")
 
-        if(!token.contents && !href.includes('signup') && !href.includes('reset') && hrefSplit[hrefSplit.length - 1]){
-            navigate("/login")
-        }
+    if(!token.contents && !href.includes('signup') && !href.includes('reset') && hrefSplit[hrefSplit.length - 1]){
+        navigate("/login")
+    }
 
-    }, [token.state])
+    onclick = () => {
+      setClicks(i => i + (i == 0 ? 1 : -1))
+    }
 
-    if(token.state === "loading"){
-      return (
-        <div className="sticky backdrop-blur z-50 w-full text-md font-semibold sm:text-lg md:text-xl lg:2xl border-b  top-0 h-14 select-none shadow-sm">
-            <div className="flex justify-center flex-col h-full mx-4">
-              <div className="flex justify-between">
+  }, [token.state])
+
+  if(token.state === "loading"){
+    return (
+      <div className="sticky backdrop-blur z-50 w-full text-md font-semibold sm:text-lg md:text-xl lg:2xl border-b  top-0 h-14 select-none shadow-sm">
+          <div className="flex justify-center flex-col h-full mx-4">
+            <div className="flex justify-between">
+              <Link to={"/"} className="flex">
+                  Monitor Lizard
+                <img className="ml-1 h-7 w-7 md:h-8 md:w-8" src="https://raw.githubusercontent.com/pahulgogna/LiveLink-frontend/master/src/assets/logo-removebg-preview.png" alt="Logo" />
+              </Link>
+            </div>
+          </div>
+      </div>
+    )
+  }
+
+  else if(token.state === "hasValue"){
+    return (
+      <div className="sticky backdrop-blur z-50 w-full text-md font-semibold sm:text-lg md:text-xl lg:2xl border-b  top-0 h-14 select-none shadow-sm">
+          <div className="flex justify-center flex-col h-full mx-4">
+            <div className="flex justify-between">
+              <div className="flex flex-col justify-center">
                 <Link to={"/"} className="flex">
                     Monitor Lizard
                   <img className="ml-1 h-7 w-7 md:h-8 md:w-8" src="https://raw.githubusercontent.com/pahulgogna/LiveLink-frontend/master/src/assets/logo-removebg-preview.png" alt="Logo" />
                 </Link>
               </div>
-            </div>
-        </div>
-      )
-    }
+              {
+                token.contents &&
+                user.state === "hasValue" &&
+                user.contents &&
+                <div className="group" 
+                  
+                  onMouseEnter={() => {
+                    setMouseIn(_ => true)
+                  }}
+                  
 
-    else if(token.state === "hasValue"){
-      return (
-        <div className="sticky backdrop-blur z-50 w-full text-md font-semibold sm:text-lg md:text-xl lg:2xl border-b  top-0 h-14 select-none shadow-sm">
-            <div className="flex justify-center flex-col h-full mx-4">
-              <div className="flex justify-between">
-                <div className="flex flex-col justify-center">
-                  <Link to={"/"} className="flex">
-                      Monitor Lizard
-                    <img className="ml-1 h-7 w-7 md:h-8 md:w-8" src="https://raw.githubusercontent.com/pahulgogna/LiveLink-frontend/master/src/assets/logo-removebg-preview.png" alt="Logo" />
-                  </Link>
+                  onMouseLeave={() => {
+                    setMouseIn(_ => false)
+                  }}
+
+                >
+                  <Avatar>
+                    {user.contents?.name || user.contents?.email}
+                  </Avatar>
+                    <Options name={user.contents?.name || ''} email={user.contents?.email || ''} className={optionsOpen ? " grid " : " hidden "}/>
                 </div>
-                {
-                  token.contents &&
-                  user.state === "hasValue" &&
-                  user.contents &&
-                  <div className="group">
-                    <Avatar>
-                      {user.contents?.name || user.contents?.email}
-                    </Avatar>
-                    <Options name={user.contents?.name || ''} email={user.contents?.email || ''} className="hidden group-hover:grid transition-all"/>
-                  </div>
-                }
-                
-              </div>
+              }
+              
             </div>
-        </div>
-      )
-    }
+          </div>
+      </div>
+    )
+  }
 
 }
 
