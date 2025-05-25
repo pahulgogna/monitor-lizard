@@ -152,12 +152,13 @@ monitorRouter.get("/all", async (req: CustomRequest, res) => {
     res.json()
 })
 
-monitorRouter.get("/:id", async (req, res) => {
+monitorRouter.get("/:id", async (req: CustomRequest, res) => {
     const { id } = req.params
     
     const monitorFound = await prisma.monitor.findFirst({
         where:{
-            id: id
+            id: id,
+            userId: req.userId
         }
     })
 

@@ -65,7 +65,7 @@ function Appbar() {
     let href = window.location.href
     let hrefSplit = href.split("/")
 
-    if(!token.contents && !href.includes('signup') && !href.includes('reset') && hrefSplit[hrefSplit.length - 1]){
+    if(token.state == "hasValue" && !token.contents && !href.includes('signup') && !href.includes('reset') && hrefSplit[hrefSplit.length - 1]){
         navigate("/login")
     }
 
@@ -75,7 +75,7 @@ function Appbar() {
 
   }, [token.state])
 
-  if(token.state === "loading"){
+  if(token.state === "loading" || !token.contents){
     return (
       <div className="sticky backdrop-blur z-50 w-full text-md font-semibold sm:text-lg md:text-xl lg:2xl border-b  top-0 h-14 select-none shadow-sm">
           <div className="flex justify-center flex-col h-full mx-4">
@@ -90,7 +90,8 @@ function Appbar() {
     )
   }
 
-  else if(token.state === "hasValue"){
+  else if(token.state === "hasValue" && token.contents){
+
     return (
       <div className="sticky backdrop-blur z-50 w-full text-md font-semibold sm:text-lg md:text-xl lg:2xl border-b  top-0 h-14 select-none shadow-sm">
           <div className="flex justify-center flex-col h-full mx-4">

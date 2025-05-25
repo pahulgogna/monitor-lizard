@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useRecoilValueLoadable } from "recoil"
 import { monitorsAtomFamily } from "../store/atom/atom"
 import Loading from "../components/overlays/Loading"
@@ -10,6 +10,7 @@ function ViewMonitor() {
 
     const { id } = useParams()
     const monitorData = useRecoilValueLoadable(monitorsAtomFamily(id))
+    const navigate = useNavigate()
 
 
     if(monitorData.state == "loading"){
@@ -19,6 +20,7 @@ function ViewMonitor() {
     }
 
     else if(monitorData.state == "hasValue" && monitorData.contents){
+
         return (
             <div className="flex flex-col h-full p-5 pt-7">
                 <div className="flex flex-col gap-1">
@@ -56,6 +58,13 @@ function ViewMonitor() {
                 </div>
             </div>
         )
+    }
+
+    else{
+        if(monitorData.contents == null){
+            navigate("/dashboard")
+            return
+        }
     }
 }
 
